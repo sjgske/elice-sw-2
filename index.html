@@ -21,6 +21,7 @@
       gtag("config", "G-HSB2JM3Y0Q");
     </script>
   </head>
+
   <body>
     <h1><a href="index.html">WEB</a></h1>
 
@@ -40,6 +41,26 @@
         <h2>Welcome</h2>
         Hello, WEB!!
       </div>
+
+      <input
+        class="button"
+        type="button"
+        value="night"
+        onclick="
+        const $ = selector => document.querySelector(selector);
+          if ($('input').value === 'night') {
+            $('body').style.backgroundColor = '#000'
+            $('body').style.color = '#eee'
+            $('a').style.color = '#eee'
+            $('input').value = 'day'
+          } else if ($('input').value === 'day') {
+            $('body').style.backgroundColor = 'transparent'
+            $('body').style.color = '#000'
+            $('a').style.color = '#000'
+            $('input').value = 'night'
+          }
+          "
+      />
     </div>
   </body>
 </html>
