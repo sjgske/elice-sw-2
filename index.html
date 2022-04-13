@@ -43,7 +43,17 @@
       </div>
 
       <script>
-        console.log(this); // this: window
+        function switchMode(mode) {
+          if (mode === "night") {
+            $("body").style.backgroundColor = "#000";
+            $("body").style.color = "#eee";
+            $("a").style.color = "#eee";
+          } else {
+            $("body").style.backgroundColor = "transparent";
+            $("body").style.color = "#000";
+            $("a").style.color = "#000";
+          }
+        }
       </script>
 
       <input
@@ -51,17 +61,13 @@
         type="button"
         value="night"
         onclick="
-        const $ = selector => document.querySelector(selector);
+          const $ = selector => document.querySelector(selector);
           if (this.value === 'night') {
-            $('body').style.backgroundColor = '#000'
-            $('body').style.color = '#eee'
-            $('a').style.color = '#eee'
-            this.value = 'day' // this: 버튼을 가리킴
-          } else if (this.value === 'day') {
-            $('body').style.backgroundColor = 'transparent'
-            $('body').style.color = '#000'
-            $('a').style.color = '#000'
-            this.value = 'night'
+            switchMode('night');
+            this.value = 'day'; // this: 버튼을 가리킴
+          } else {
+            switchMode('day');
+            this.value = 'night';
           }
         "
       />
