@@ -42,24 +42,28 @@
         Hello, WEB!!
       </div>
 
+      <script>
+        console.log(this); // this: window
+      </script>
+
       <input
         class="button"
         type="button"
         value="night"
         onclick="
         const $ = selector => document.querySelector(selector);
-          if ($('input').value === 'night') {
+          if (this.value === 'night') {
             $('body').style.backgroundColor = '#000'
             $('body').style.color = '#eee'
             $('a').style.color = '#eee'
-            $('input').value = 'day'
-          } else if ($('input').value === 'day') {
+            this.value = 'day' // this: 버튼을 가리킴
+          } else if (this.value === 'day') {
             $('body').style.backgroundColor = 'transparent'
             $('body').style.color = '#000'
             $('a').style.color = '#000'
-            $('input').value = 'night'
+            this.value = 'night'
           }
-          "
+        "
       />
     </div>
   </body>
