@@ -13,21 +13,12 @@ a {
 
 h1 {
   padding: 20px;
-  border-bottom: 10px solid green;
 }
 
-#container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.left {
-  padding: 20px;
-  border-right: 10px solid green;
-}
-
-.right {
-  padding: 20px;
+input,
+button,
+textarea {
+  font-family: inherit;
 }
 
 .button {
@@ -35,4 +26,12 @@ h1 {
   top: 20px;
   left: 20px;
   width: 50px;
+}
+
+.form {
+  width: 200px;
+}
+
+.hidden {
+  display: none;
 }
