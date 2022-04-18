@@ -6,20 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WEB - Welcome</title>
     <link rel="stylesheet" href="css/style.css" />
-    <!-- Global site tag (gtag.js) - Google Analytics -->
     <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-HSB2JM3Y0Q"
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
     ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "G-HSB2JM3Y0Q");
-    </script>
   </head>
 
   <body>
@@ -44,10 +35,14 @@
 
       <script>
         function switchMode(mode) {
+          const $ = (selector) => document.querySelector(selector);
           if (mode === "night") {
             $("body").style.backgroundColor = "#000";
             $("body").style.color = "#eee";
             $("a").style.color = "#eee";
+            // jquery chaining
+            // $("body").css("background-color", "black").css("color", "#eee");
+            // querySelectorAll, 반복문 필요 없음! 그냥 똑같이 쓴다.
           } else {
             $("body").style.backgroundColor = "transparent";
             $("body").style.color = "#000";
@@ -61,7 +56,6 @@
         type="button"
         value="night"
         onclick="
-          const $ = selector => document.querySelector(selector);
           if (this.value === 'night') {
             switchMode('night');
             this.value = 'day'; // this: 버튼을 가리킴
