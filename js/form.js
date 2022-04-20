@@ -15,19 +15,45 @@ let topics = [
     body: "javascript is ..",
   },
 ];
-// TODO: 홈화면, 메뉴 상세 화면 버튼 다르게 나타나기 구현!
+let nextId = 4;
+let selectedId = null;
+
+// TODO: 새로 추가한 아이템 클릭 시 오류 해결
+
+// Show update & delete buttons
+function handleButtons() {
+  // 홈일 때 버튼 hidden ON
+  // 메뉴 선택되었을 때 버튼 hidden 해제
+  // selectedId -> 전역변수 (메뉴 클릭 시 obj의 아이디 값이 할당됨)
+  $$(".handle").forEach((button) => {
+    if (selectedId !== null) {
+      button.classList.remove("hidden");
+    } else {
+      button.classList.add("hidden");
+    }
+  });
+}
+
+// Return to home
+function handleTitle(e) {
+  e.preventDefault();
+  $(".article").innerHTML = `<h2>Welcome</h2><p>Hello, WEB!!</p>`;
+  selectedId = null;
+  handleButtons();
+}
 
 // Show contents of menu
 function handleMenu(e) {
   // 메뉴를 클릭하면 e.target과 id가 같은 요소(obj)의 title, body를 article에 그려준다.
   e.preventDefault();
-  let selectedId = parseInt(e.target.id);
+  selectedId = parseInt(e.target.id);
   topics.forEach((el) => {
     if (el.id === selectedId) {
       $(".article h2").innerText = el.title;
       $(".article p").innerText = el.body;
     }
   });
+  handleButtons();
 }
 
 // Render list item
@@ -42,24 +68,31 @@ function render(obj) {
 function handleCreateItem(e) {
   e.preventDefault();
   const newObj = {
-    id: topics.length + 1,
+    id: nextId, // topics.length + 1 => 기존 아이템을 삭제했을 경우 id가 덮어씌워질 수 있음
     title: $(".input-title").value,
     body: $(".input-desc").value,
   };
   topics.push(newObj);
   render(newObj);
+  nextId++;
   $(".input-title").value = "";
   $(".input-desc").value = "";
 }
 
-// Show create form
+// Show form
 $(".create-btn").addEventListener("click", () =>
   $(".form").classList.toggle("hidden")
 );
 
 // Event handlers
-$(".form").addEventListener("submit", handleCreateItem);
+function initEventHandlers() {
+  $(".form").addEventListener("submit", handleCreateItem);
 
-$$(".menu-list a").forEach((el) => {
-  el.addEventListener("click", handleMenu);
-});
+  $$(".menu-list a").forEach((el) => {
+    el.addEventListener("click", handleMenu);
+  });
+
+  $(".title").addEventListener("click", handleTitle);
+}
+
+initEventHandlers();
