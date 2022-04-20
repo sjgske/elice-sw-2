@@ -10,8 +10,8 @@
 
   <body>
     <div id="container">
-      <h1><a href="index.html">WEB</a></h1>
-      <input class="button" type="button" value="night" />
+      <h1 class="title"><a href="index.html">WEB</a></h1>
+      <input class="switch-button" type="button" value="night" />
 
       <nav>
         <ol class="menu-list">
@@ -22,8 +22,11 @@
 
         <!-- 홈에서는 create 버튼만 -->
         <!-- 상세페이지 들어가면 삭제, 수정버튼 나타남 -->
-        <button class="create-btn" type="button">create</button>
-        <button class="delete-btn" type="button">delete</button>
+        <ul class="btn-list">
+          <button class="create-btn" type="button">create</button>
+          <button class="update-btn handle hidden" type="button">update</button>
+          <button class="delete-btn handle hidden" type="button">delete</button>
+        </ul>
 
         <form class="form hidden" action="">
           <input class="input-title" type="text" placeholder="title" />

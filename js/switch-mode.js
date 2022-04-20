@@ -16,11 +16,10 @@ function switchMode(mode) {
   }
 }
 
-const btn = document.querySelector(".button");
-btn.addEventListener("click", (e) => {
+$(".switch-button").addEventListener("click", (e) => {
   if (e.target.value === "night") {
     switchMode("night");
-    e.target.value = "day"; // this: 버튼을 가리킴
+    e.target.value = "day";
   } else {
     switchMode("day");
     e.target.value = "night";

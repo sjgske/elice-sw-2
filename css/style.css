@@ -1,18 +1,16 @@
 * {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }
 
 body {
-  padding-top: 50px;
+  padding: 50px 0 0 20px;
 }
 
 a {
   text-decoration: none;
   color: inherit;
-}
-
-h1 {
-  padding: 20px;
 }
 
 input,
@@ -21,7 +19,15 @@ textarea {
   font-family: inherit;
 }
 
-.button {
+button {
+  width: 50px;
+}
+
+.menu-list {
+  padding-left: 18px;
+}
+
+.switch-button {
   position: fixed;
   top: 20px;
   left: 20px;
@@ -29,7 +35,9 @@ textarea {
 }
 
 .form {
-  width: 200px;
+  display: flex;
+  flex-direction: column;
+  width: 150px;
 }
 
 .hidden {
