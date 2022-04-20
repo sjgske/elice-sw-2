@@ -15,43 +15,51 @@ let topics = [
     body: "javascript is ..",
   },
 ];
+// TODO: 홈화면, 메뉴 상세 화면 버튼 다르게 나타나기 구현!
 
-function render() {
-  $("ol").innerHTML = "";
-  for (let i = 0; i < topics.length; i++) {
-    let navTag = `<li><a class="link" href="${topics[i].id}.html">${topics[i].title}</a></li>`;
-    $("ol").innerHTML += navTag;
-  }
+// Show contents of menu
+function handleMenu(e) {
+  // 메뉴를 클릭하면 e.target과 id가 같은 요소(obj)의 title, body를 article에 그려준다.
+  e.preventDefault();
+  let selectedId = parseInt(e.target.id);
+  topics.forEach((el) => {
+    if (el.id === selectedId) {
+      $(".article h2").innerText = el.title;
+      $(".article p").innerText = el.body;
+    }
+  });
 }
 
-// show form
-$(".create-btn").addEventListener("click", () => {
-  $(".form").classList.toggle("hidden");
-});
+// Render list item
+function render(obj) {
+  const li = document.createElement("li");
+  li.innerHTML = `<a id="${obj.id}" href="/read/${obj.id}">${obj.title}</a>`;
 
-// add list item
-$(".form").addEventListener("submit", (e) => {
-  let count = 4;
+  $(".menu-list").appendChild(li);
+}
+
+// Add list item
+function handleCreateItem(e) {
   e.preventDefault();
   const newObj = {
-    id: count,
-    title: $(".title").value,
-    body: $(".desc").value,
+    id: topics.length + 1,
+    title: $(".input-title").value,
+    body: $(".input-desc").value,
   };
-
   topics.push(newObj);
-  render();
-  $(".title").value = "";
-  $(".desc").value = "";
-  count++;
-});
+  render(newObj);
+  $(".input-title").value = "";
+  $(".input-desc").value = "";
+}
 
-render();
+// Show create form
+$(".create-btn").addEventListener("click", () =>
+  $(".form").classList.toggle("hidden")
+);
 
-// show article
-document.querySelectorAll(".link").forEach((link) => {
-  link.addEventListener("click", (e) => {
-    e.preventDefault();
-    $(".article h2").innerText = e.target.innerText;
-  });
+// Event handlers
+$(".form").addEventListener("submit", handleCreateItem);
+
+$$(".menu-list a").forEach((el) => {
+  el.addEventListener("click", handleMenu);
 });
