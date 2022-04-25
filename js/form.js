@@ -1,7 +1,51 @@
 let nextId = 4;
 let selectedId = null;
 
-// TODO: 다른 부분도 fetch로 json data 연결해주기
+// TODO: 중복되는 코드 정리
+// TODO: toggleFormClass 다시 짜기
+
+// Delete Item
+function deleteItem() {
+  fetch(`http://localhost:3000/topics/${selectedId}`, {
+    method: "delete",
+  })
+    .then((res) => res.json())
+    .then(() => {
+      selectedId = null;
+      render();
+      handleTitle();
+    });
+}
+
+// Update contents
+function handleUpdate() {
+  const title = $(".input-title").value;
+  const body = $(".input-desc").value;
+  fetch(`http://localhost:3000/topics/${selectedId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title: title, body: body }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      render();
+      toggleFormClass(".update-form");
+      selectedId = data.id;
+    });
+}
+
+// Update form toggle
+function toggleUpdate() {
+  fetch(`http://localhost:3000/topics/${selectedId}`)
+    .then((response) => response.json())
+    .then((topics) => {
+      toggleFormClass(".update-form");
+      $("form input").value = topics.title;
+      $("form textarea").innerText = topics.title;
+    });
+}
 
 // Show update & delete buttons
 function handleButtons() {
@@ -27,67 +71,75 @@ function handleTitle(e) {
 
 // Show contents of menu
 function handleMenu(e) {
-  // 메뉴를 클릭하면 e.target과 id가 같은 요소(obj)의 title, body를 article에 그려준다.
   e.preventDefault();
-  selectedId = parseInt(e.target.id);
-  topics.forEach((el) => {
-    if (el.id === selectedId) {
-      $(".article h2").innerText = el.title;
-      $(".article p").innerText = el.body;
-    }
-  });
-  handleButtons();
+  fetch("http://localhost:3000/topics/")
+    .then((response) => response.json())
+    .then((topics) => {
+      topics.forEach((el) => {
+        selectedId = parseInt(e.target.id);
+        if (selectedId === el.id) {
+          $(".article h2").innerText = el.title;
+          $(".article p").innerText = el.body;
+        }
+        handleButtons();
+      });
+    });
 }
 
 // Render list item
 function render() {
   fetch("http://localhost:3000/topics")
-    .then((response) => response.json()) // response의 데이터 타입 표기해준다.
+    .then((response) => response.json())
     .then((topics) => {
       // 받아온 json 데이터를 사용한다!
+      // 데이터를 받은 후에 호출된다.
+      $("nav ol").innerText = "";
       topics.forEach((el) => {
         const li = document.createElement("li");
         li.innerHTML = `<a id="${el.id}" href="/read/${el.id}">${el.title}</a>`;
         $(".menu-list").appendChild(li);
+        initEventHandlers();
       });
     });
+  $("nav ol").innerText = "Loading...";
 }
 
 // Add list item
 function handleCreateItem(e) {
   e.preventDefault();
-  const newObj = {
-    id: nextId, // topics.length + 1 => 기존 아이템을 삭제했을 경우 id가 덮어씌워질 수 있음
-    title: $(".input-title").value,
-    body: $(".input-desc").value,
-  };
-  topics.push(newObj);
-  render();
-  toggleFormClass();
-  initEventHandlers();
-  selectedId = nextId;
-  nextId++;
-  $(".input-title").value = "";
-  $(".input-desc").value = "";
+  const title = $(".input-title").value;
+  const body = $(".input-desc").value;
+  fetch("http://localhost:3000/topics", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title: title, body: body }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      render();
+      toggleFormClass(".create-form");
+      selectedId = data.id;
+    });
 }
 
 // Show form
-function toggleFormClass() {
-  $(".form").classList.toggle("hidden");
+function toggleFormClass(form) {
+  $(form).classList.toggle("hidden");
 }
 
 // Event handlers
 function initEventHandlers() {
-  $(".form").addEventListener("submit", handleCreateItem);
-
+  $(".create-form").addEventListener("submit", handleCreateItem);
+  $(".update-form").addEventListener("submit", handleUpdate);
   $$(".menu-list a").forEach((el) => {
     el.addEventListener("click", handleMenu);
   });
-
   $(".title").addEventListener("click", handleTitle);
-
-  $(".create-btn").addEventListener("click", toggleFormClass);
+  $(".create-btn").addEventListener("click", toggleFormClass(".create-form"));
+  $(".update-btn").addEventListener("click", toggleUpdate);
+  $(".delete-btn").addEventListener("click", deleteItem);
 }
 
-initEventHandlers();
 render();
