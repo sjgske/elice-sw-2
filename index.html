@@ -15,9 +15,9 @@
 
       <nav>
         <ol class="menu-list">
-          <li><a id="1" href="/read/1">html</a></li>
+          <!-- <li><a id="1" href="/read/1">html</a></li>
           <li><a id="2" href="/read/2">css</a></li>
-          <li><a id="3" href="/read/3">javascript</a></li>
+          <li><a id="3" href="/read/3">javascript</a></li> -->
         </ol>
 
         <!-- 홈에서는 create 버튼만 -->
@@ -28,7 +28,7 @@
           <button class="delete-btn handle hidden" type="button">delete</button>
         </ul>
 
-        <form class="form hidden" action="">
+        <form class="create-form hidden" action="">
           <input class="input-title" type="text" placeholder="title" />
           <textarea
             class="input-desc"
@@ -38,7 +38,20 @@
             rows="5"
             placeholder="description"
           ></textarea>
-          <button class="submit" type="submit">제출</button>
+          <button class="submit" type="submit">submit</button>
+        </form>
+
+        <form class="update-form hidden" action="">
+          <input class="input-title" type="text" placeholder="title" />
+          <textarea
+            class="input-desc"
+            name=""
+            id=""
+            cols="20"
+            rows="5"
+            placeholder="description"
+          ></textarea>
+          <button class="submit-update" type="submit">submit</button>
         </form>
       </nav>
 
