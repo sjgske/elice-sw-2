@@ -1,24 +1,7 @@
-let topics = [
-  {
-    id: 1,
-    title: "html",
-    body: "html is ..",
-  },
-  {
-    id: 2,
-    title: "css",
-    body: "css is ..",
-  },
-  {
-    id: 3,
-    title: "javascript",
-    body: "javascript is ..",
-  },
-];
 let nextId = 4;
 let selectedId = null;
 
-// TODO: 새로 추가한 아이템 클릭 시 오류 해결
+// TODO: 다른 부분도 fetch로 json data 연결해주기
 
 // Show update & delete buttons
 function handleButtons() {
@@ -57,11 +40,17 @@ function handleMenu(e) {
 }
 
 // Render list item
-function render(obj) {
-  const li = document.createElement("li");
-  li.innerHTML = `<a id="${obj.id}" href="/read/${obj.id}">${obj.title}</a>`;
-
-  $(".menu-list").appendChild(li);
+function render() {
+  fetch("http://localhost:3000/topics")
+    .then((response) => response.json()) // response의 데이터 타입 표기해준다.
+    .then((topics) => {
+      // 받아온 json 데이터를 사용한다!
+      topics.forEach((el) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<a id="${el.id}" href="/read/${el.id}">${el.title}</a>`;
+        $(".menu-list").appendChild(li);
+      });
+    });
 }
 
 // Add list item
@@ -73,16 +62,19 @@ function handleCreateItem(e) {
     body: $(".input-desc").value,
   };
   topics.push(newObj);
-  render(newObj);
+  render();
+  toggleFormClass();
+  initEventHandlers();
+  selectedId = nextId;
   nextId++;
   $(".input-title").value = "";
   $(".input-desc").value = "";
 }
 
 // Show form
-$(".create-btn").addEventListener("click", () =>
-  $(".form").classList.toggle("hidden")
-);
+function toggleFormClass() {
+  $(".form").classList.toggle("hidden");
+}
 
 // Event handlers
 function initEventHandlers() {
@@ -93,6 +85,9 @@ function initEventHandlers() {
   });
 
   $(".title").addEventListener("click", handleTitle);
+
+  $(".create-btn").addEventListener("click", toggleFormClass);
 }
 
 initEventHandlers();
+render();
