@@ -7,10 +7,18 @@
     <title>Document</title>
   </head>
   <body>
-    <form action="/expost" method="post">
-      <!-- input의 값을 받아올 떄 name이 key 역할!-->
+    <!-- <form action="/expost" method="post">
+      // input의 값을 받아올 떄 name이 key 역할!
       <input type="text" name="name" id="" />
       <input type="number" name="phone" id="" />
+      <input type="date" name="date" id="" />
+      <input type="submit" value="전송하기" />
+    </form> -->
+
+    <form action="/expost/addbook" method="post">
+      <input type="text" name="title" id="" />
+      <input type="text" name="author" id="" />
+      <input type="number" name="price" id="" />
       <input type="date" name="date" id="" />
       <input type="submit" value="전송하기" />
     </form>
