@@ -3,10 +3,9 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const cors = require("cors");
 
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-const testRouter = require("./routes/call");
 const postRouter = require("./routes/post");
 const dbconnect = require("./models/index");
 dbconnect();
@@ -23,9 +22,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(
+  cors({
+    orgin: "*",
+    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
+  })
+);
+
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/test", testRouter);
 app.use("/expost", postRouter);
 
 // catch 404 and forward to error handler
