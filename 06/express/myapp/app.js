@@ -7,6 +7,7 @@ const cors = require("cors");
 
 var indexRouter = require("./routes/index");
 const postRouter = require("./routes/post");
+const blogRouter = require("./routes/blog");
 const dbconnect = require("./models/index");
 dbconnect();
 
@@ -31,6 +32,7 @@ app.use(
 
 app.use("/", indexRouter);
 app.use("/expost", postRouter);
+app.use("/blog", blogRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
