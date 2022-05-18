@@ -38,4 +38,30 @@ router.post("/", (req, res, next) => {
 
 router.post("/addbook", bookController.addbook);
 
+// bookinfo 에 있는 정보를 다 가져온다.
+router.get("/getlist", async (req, res) => {
+  const result = await BookSchema.find({}).exec();
+  return res.status(200).json(result);
+});
+
+// Error handling
+router.post("/users", async (req, res, next) => {
+  try {
+    const userid = req.body.userid;
+    const job = req.body.job;
+    const user = new userSchema({
+      userid: userid,
+      job: job,
+    });
+    const result = await user.save();
+    res.status(200).json({
+      result,
+      message: "user saved",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
 module.exports = router;
