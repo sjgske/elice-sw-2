@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WEB - Welcome</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div id="container">
+      <h1 class="title"><a href="index.html">WEB</a></h1>
+      <input class="switch-button" type="button" value="night" />
+
+      <nav>
+        <ol class="menu-list">
+          <!-- <li><a id="1" href="/read/1">html</a></li>
+          <li><a id="2" href="/read/2">css</a></li>
+          <li><a id="3" href="/read/3">javascript</a></li> -->
+        </ol>
+
+        <!-- 홈에서는 create 버튼만 -->
+        <!-- 상세페이지 들어가면 삭제, 수정버튼 나타남 -->
+        <ul class="btn-list">
+          <button class="create-btn" type="button">create</button>
+          <button class="update-btn handle hidden" type="button">update</button>
+          <button class="delete-btn handle hidden" type="button">delete</button>
+        </ul>
+
+        <form class="create-form hidden" action="">
+          <input class="input-title" type="text" placeholder="title" />
+          <textarea
+            class="input-desc"
+            name=""
+            id=""
+            cols="20"
+            rows="5"
+            placeholder="description"
+          ></textarea>
+          <button class="submit" type="submit">submit</button>
+        </form>
+
+        <form class="update-form hidden" action="">
+          <input class="input-title" type="text" placeholder="title" />
+          <textarea
+            class="input-desc"
+            name=""
+            id=""
+            cols="20"
+            rows="5"
+            placeholder="description"
+          ></textarea>
+          <button class="submit-update" type="submit">submit</button>
+        </form>
+      </nav>
+
+      <article class="article">
+        <h2>Welcome</h2>
+        <p>Hello, WEB!!</p>
+      </article>
+    </div>
+
+    <script src="js/switch-mode.js"></script>
+    <script src="js/form.js"></script>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>더보기</title>
+    <style>
+      * {
+        margin: 0;
+      }
+      body {
+        padding: 50px;
+      }
+      button {
+        border: none;
+        cursor: pointer;
+      }
+      .invisible {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>
+      JavaScript is
+      <button
+        class="btn-1"
+        onclick="
+        document.querySelector('span').classList.toggle('invisible');
+        document.querySelector('.btn-1').classList.toggle('invisible');
+        document.querySelector('.btn-2').classList.toggle('invisible');
+      "
+      >
+        ...
+      </button>
+    </h3>
+    <span class="invisible"
+      >Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil
+      reiciendis, mollitia libero nesciunt voluptates enim inventore, molestiae
+      voluptate officia quos cupiditate nisi! Doloremque optio iure saepe
+      numquam repellendus mollitia ea?</span
+    >
+    <button
+      class="btn-2 invisible"
+      onclick="
+        document.querySelector('span').classList.toggle('invisible');
+        document.querySelector('.btn-1').classList.toggle('invisible');
+        document.querySelector('.btn-2').classList.toggle('invisible');
+      "
+    >
+      x
+    </button>
+  </body>
+</html>

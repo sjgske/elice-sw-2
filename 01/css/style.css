@@ -1,0 +1,45 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  padding: 50px 0 0 20px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+input,
+button,
+textarea {
+  font-family: inherit;
+}
+
+button {
+  width: 50px;
+}
+
+.menu-list {
+  padding-left: 18px;
+}
+
+.switch-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+}
+
+.hidden {
+  display: none;
+}

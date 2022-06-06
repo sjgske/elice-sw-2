@@ -1,0 +1,54 @@
+<html>
+  <body>
+    <h1>배열 - array</h1>
+    <ul>
+      <li>html</li>
+      <li>css</li>
+      <li>js</li>
+    </ul>
+    <ul>
+      <li>egoing</li>
+      <li>sjgske</li>
+      <li>mongmongyee</li>
+    </ul>
+    <ul>
+      <li>10</li>
+      <li>20</li>
+      <li>30</li>
+    </ul>
+
+    <script>
+      let contents = ["html", "css", "js"];
+      let members = ["egoing", "sjgske", "mongmongyee"];
+      let scores = [10, 20, 30];
+
+      console.log(contents[2]); // 'js'
+      console.log(contents.length); // 3
+      contents.push("react");
+      console.log("contents");
+    </script>
+
+    <h1>Loop</h1>
+    <script>
+      // debugger;
+      console.log(1);
+      for (let i = 0; i < 3; i = i + 1) {
+        console.log(2);
+        console.log(3);
+      }
+      console.log(4);
+    </script>
+
+    <h2>Array + Loop</h2>
+    <script>
+      const body = document.querySelector("body");
+      const ul = document.createElement("ul");
+      for (let i = 0; i < contents.length; i++) {
+        const li = document.createElement("li");
+        li.innerText = contents[i];
+        ul.appendChild(li);
+      }
+      body.appendChild(ul);
+    </script>
+  </body>
+</html>
