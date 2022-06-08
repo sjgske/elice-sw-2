@@ -1,4 +1,6 @@
 import "./App.css";
+import { useState } from "react";
+// use가 붙어있는 함수들을 hook이라고 한다.
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 
@@ -25,7 +27,7 @@ function Nav({ data, onSelect }) {
     <li key={el.id}>
       <a
         href={`/read/${el.id}`}
-        Click={(e) => {
+        onClick={(e) => {
           e.preventDefault();
           onSelect(el.id);
           // onSelect의 인자로 el.id 전달
@@ -52,30 +54,43 @@ function Article({ title, body }) {
   );
 }
 
-function EgoingButton({ onClick }) {
-  return <button onClick={onClick}>버튼</button>;
-}
-
 function App() {
   const data = [
     { id: 1, title: "html", body: "html is ..." },
     { id: 2, title: "css", body: "css is ..." },
   ];
+
+  const [mode, setMode] = useState("WELCOME");
+  const [id, setId] = useState(null);
+  // 'WELCOME' = 상태의 default 값
+  // useState('값')는 ['값', 함수] 리턴한다.
+  // 함수는 값을 바꾸는 역할
+
+  // mode 값에 따라 content 동적으로 바꾸기 -> state!
+  let content = null;
+  if (mode === "WELCOME") {
+    console.log(mode, id);
+    content = <Article title="Welcome" body="Hello, WEB!" />;
+  } else if (mode === "READ") {
+    const topic = data.filter((el) => el.id === id)[0];
+    content = <Article title={topic.title} body={topic.body} />;
+  }
+
   return (
     <div>
       <Header
         onSelect={() => {
-          alert("header!!");
+          setMode("WELCOME");
         }}
       />
       <Nav
         data={data}
-        // onSelect: 받아온 인자 값을 alert창에 찍어준다.
         onSelect={(id) => {
-          alert("Nav!!" + id);
+          setMode("READ");
+          setId(id);
         }}
       />
-      <Article title="HTML" body="HTML is ..." />
+      {content}
       <ButtonGroup variant="outlined" aria-label="text button group">
         <Button
           onClick={() => {
@@ -87,11 +102,6 @@ function App() {
         <Button>UPDATE</Button>
         <Button>DELETE</Button>
       </ButtonGroup>
-      <EgoingButton
-        onClick={() => {
-          alert("click!");
-        }}
-      />
     </div>
   );
 }
