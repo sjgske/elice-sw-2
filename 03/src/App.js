@@ -2,30 +2,40 @@ import "./App.css";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 
-function Header() {
+function Header({ onSelect }) {
   return (
     <header>
       <h1>
-        <a href="/">Web</a>
+        <a
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            onSelect();
+          }}
+        >
+          Web
+        </a>
       </h1>
     </header>
   );
 }
 
-function Nav({ data }) {
+function Nav({ data, onSelect }) {
   const list = data.map((el) => (
     <li key={el.id}>
-      <a href={`/read/${el.id}`}>{el.title}</a>
+      <a
+        href={`/read/${el.id}`}
+        Click={(e) => {
+          e.preventDefault();
+          onSelect(el.id);
+          // onSelect의 인자로 el.id 전달
+          // el.id는 map함수의 인자(data 배열 각각의 원소)의 id 속성
+        }}
+      >
+        {el.title}
+      </a>
     </li>
   ));
-  // const list = [
-  //   <li>
-  //     <a href="/read/1">html</a>
-  //   </li>,
-  //   <li>
-  //     <a href="/read/2">css</a>
-  //   </li>,
-  // ];
   return (
     <nav>
       <ol>{list}</ol>
@@ -42,22 +52,46 @@ function Article({ title, body }) {
   );
 }
 
+function EgoingButton({ onClick }) {
+  return <button onClick={onClick}>버튼</button>;
+}
+
 function App() {
-  const topics = [
+  const data = [
     { id: 1, title: "html", body: "html is ..." },
     { id: 2, title: "css", body: "css is ..." },
   ];
   return (
     <div>
-      <Header />
-      <Nav data={topics} />
-      <Article title="Welcome" body="Hello, WEB!" />
+      <Header
+        onSelect={() => {
+          alert("header!!");
+        }}
+      />
+      <Nav
+        data={data}
+        // onSelect: 받아온 인자 값을 alert창에 찍어준다.
+        onSelect={(id) => {
+          alert("Nav!!" + id);
+        }}
+      />
       <Article title="HTML" body="HTML is ..." />
       <ButtonGroup variant="outlined" aria-label="text button group">
-        <Button>CREATE</Button>
+        <Button
+          onClick={() => {
+            alert("create!");
+          }}
+        >
+          CREATE
+        </Button>
         <Button>UPDATE</Button>
         <Button>DELETE</Button>
       </ButtonGroup>
+      <EgoingButton
+        onClick={() => {
+          alert("click!");
+        }}
+      />
     </div>
   );
 }
