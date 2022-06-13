@@ -3,10 +3,11 @@ import { useState } from "react";
 // use가 붙어있는 함수들을 hook이라고 한다.
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import styled from "styled-components";
 
-function Header({ onSelect }) {
+function Header({ className, onSelect }) {
   return (
-    <header>
+    <header className={className}>
       <h1>
         <a
           href="/"
@@ -22,6 +23,12 @@ function Header({ onSelect }) {
   );
 }
 
+const HeaderStyled = styled(Header)`
+  border-bottom: 1px solid gray;
+  padding: 20px 0;
+  font-size: 20px;
+`;
+
 function Nav({ data, onSelect }) {
   const list = data.map((el) => (
     <li key={el.id}>
@@ -30,8 +37,6 @@ function Nav({ data, onSelect }) {
         onClick={(e) => {
           e.preventDefault();
           onSelect(el.id);
-          // onSelect의 인자로 el.id 전달
-          // el.id는 map함수의 인자(data 배열 각각의 원소)의 id 속성
         }}
       >
         {el.title}
@@ -62,11 +67,7 @@ function App() {
 
   const [mode, setMode] = useState("WELCOME");
   const [id, setId] = useState(null);
-  // 'WELCOME' = 상태의 default 값
-  // useState('값')는 ['값', 함수] 리턴한다.
-  // 함수는 값을 바꾸는 역할
 
-  // mode 값에 따라 content 동적으로 바꾸기 -> state!
   let content = null;
   if (mode === "WELCOME") {
     console.log(mode, id);
@@ -77,8 +78,8 @@ function App() {
   }
 
   return (
-    <div>
-      <Header
+    <div className="App">
+      <HeaderStyled
         onSelect={() => {
           setMode("WELCOME");
         }}
