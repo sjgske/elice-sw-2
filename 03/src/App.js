@@ -59,22 +59,55 @@ function Article({ title, body }) {
   );
 }
 
-function App() {
-  const data = [
-    { id: 1, title: "html", body: "html is ..." },
-    { id: 2, title: "css", body: "css is ..." },
-  ];
+function Create({ onCreate }) {
+  return (
+    <article>
+      <h2>Create</h2>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          const title = e.target.title.value;
+          const body = e.target.body.value;
+          onCreate(title, body);
+        }}
+      >
+        <input name="title" type="text" placeholder="title" />
+        <textarea name="body" placeholder="body" />
+        <button type="submit">Create</button>
+      </form>
+    </article>
+  );
+}
 
+function App() {
   const [mode, setMode] = useState("WELCOME");
   const [id, setId] = useState(null);
+  const [topics, setTopics] = useState([
+    { id: 1, title: "html", body: "html is ..." },
+    { id: 2, title: "css", body: "css is ..." },
+  ]);
+  const [nextId, setNextId] = useState(3);
 
   let content = null;
   if (mode === "WELCOME") {
-    console.log(mode, id);
     content = <Article title="Welcome" body="Hello, WEB!" />;
   } else if (mode === "READ") {
-    const topic = data.filter((el) => el.id === id)[0];
+    const topic = topics.filter((el) => el.id === id)[0];
     content = <Article title={topic.title} body={topic.body} />;
+  } else if (mode === "CREATE") {
+    content = (
+      <Create
+        onCreate={(title, body) => {
+          const newTopic = { id: nextId, title, body };
+          const newTopics = [...topics];
+          newTopics.push(newTopic);
+          setTopics(newTopics);
+          setId(nextId);
+          setMode("READ");
+          setNextId(nextId + 1);
+        }}
+      />
+    );
   }
 
   return (
@@ -85,7 +118,7 @@ function App() {
         }}
       />
       <Nav
-        data={data}
+        data={topics}
         onSelect={(id) => {
           setMode("READ");
           setId(id);
@@ -95,13 +128,21 @@ function App() {
       <ButtonGroup variant="outlined" aria-label="text button group">
         <Button
           onClick={() => {
-            alert("create!");
+            setMode("CREATE");
           }}
         >
           CREATE
         </Button>
         <Button>UPDATE</Button>
-        <Button>DELETE</Button>
+        <Button
+          onClick={() => {
+            const newTopics = topics.filter((el) => el.id !== id);
+            setTopics(newTopics);
+            setMode("WELCOME");
+          }}
+        >
+          DELETE
+        </Button>
       </ButtonGroup>
     </div>
   );
