@@ -1,31 +1,39 @@
 import "./App.css";
-import { useState } from "react";
-import Button from "@mui/material/Button";
-import { Link, Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { HeaderStyled } from "./Header";
 import { Nav } from "./Nav";
 import { Article } from "./Article";
 import { Create } from "./Create";
 import { Read } from "./Read";
+import { Control } from "./Control";
 
 function App() {
-  const [id, setId] = useState(null); // TODO: 삭제예정
   const [topics, setTopics] = useState([
     { id: 1, title: "html", body: "html is ..." },
     { id: 2, title: "css", body: "css is ..." },
   ]);
-  const [nextId, setNextId] = useState(3);
+  const refreshTopics = async () => {
+    const res = await fetch("http://localhost:3333/topics");
+    const data = await res.json();
+    setTopics(data);
+  };
+  useEffect(() => {
+    refreshTopics();
+  }, []);
   const navigate = useNavigate();
 
-  const onCreateHandler = () => {
-    return (title, body) => {
-      const newTopic = { id: nextId, title, body };
-      const newTopics = [...topics];
-      newTopics.push(newTopic);
-      setTopics(newTopics);
-      setId(nextId);
-      setNextId(nextId + 1);
-    };
+  const onCreateHandler = async (title, body) => {
+    const res = await fetch("http://localhost:3333/topics", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ title, body }),
+    });
+    const data = res.json();
+    navigate(`/read/${data.id}`);
+    refreshTopics();
   };
 
   const deleteHander = (id) => {
@@ -36,22 +44,14 @@ function App() {
   return (
     <div className="App">
       <HeaderStyled />
-      <Nav
-        data={topics}
-        onSelect={(id) => {
-          setId(id);
-        }}
-      />
+      <Nav data={topics} />
       <Routes>
         <Route
           path="/"
           element={<Article title="Welcome" body="Hello, WEB!" />}
         />
-        <Route
-          path="/create"
-          element={<Create onCreate={onCreateHandler()} />}
-        />
-        <Route path="/read/:id" element={<Read topics={topics} />} />
+        <Route path="/create" element={<Create onCreate={onCreateHandler} />} />
+        <Route path="/read/:id" element={<Read />} />
       </Routes>
 
       <Routes>
@@ -72,35 +72,6 @@ function App() {
         })}
       </Routes>
     </div>
-  );
-}
-
-function Control({ onDelete }) {
-  const params = useParams();
-  const id = Number(params.id);
-  let contextUI = null;
-  if (id) {
-    contextUI = (
-      <>
-        <Button variant="outlined">UPDATE</Button>
-        <Button
-          variant="outlined"
-          onClick={() => {
-            onDelete(id);
-          }}
-        >
-          DELETE
-        </Button>
-      </>
-    );
-  }
-  return (
-    <>
-      <Button component={Link} to="/create" variant="outlined">
-        CREATE
-      </Button>
-      {contextUI}
-    </>
   );
 }
 
