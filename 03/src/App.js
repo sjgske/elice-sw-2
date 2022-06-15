@@ -1,8 +1,7 @@
 import "./App.css";
 import { useState } from "react";
 import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { HeaderStyled } from "./Header";
 import { Nav } from "./Nav";
 import { Article } from "./Article";
@@ -16,6 +15,7 @@ function App() {
     { id: 2, title: "css", body: "css is ..." },
   ]);
   const [nextId, setNextId] = useState(3);
+  const navigate = useNavigate();
 
   const onCreateHandler = () => {
     return (title, body) => {
@@ -26,6 +26,11 @@ function App() {
       setId(nextId);
       setNextId(nextId + 1);
     };
+  };
+
+  const deleteHander = (id) => {
+    setTopics((curr) => curr.filter((el) => el.id !== id));
+    navigate("/");
   };
 
   return (
@@ -42,25 +47,60 @@ function App() {
           path="/"
           element={<Article title="Welcome" body="Hello, WEB!" />}
         />
-        <Route path="/create" element={<Create onCreate={onCreateHandler} />} />
+        <Route
+          path="/create"
+          element={<Create onCreate={onCreateHandler()} />}
+        />
         <Route path="/read/:id" element={<Read topics={topics} />} />
       </Routes>
-      <ButtonGroup variant="outlined" aria-label="text button group">
-        <Button component={Link} to="/create">
-          CREATE
-        </Button>
-        <Button>UPDATE</Button>
+
+      <Routes>
+        {["/", "/read/:id", "/update/:id"].map((path) => {
+          return (
+            <Route
+              key={path}
+              path={path}
+              element={
+                <Control
+                  onDelete={(id) => {
+                    deleteHander(id);
+                  }}
+                />
+              }
+            ></Route>
+          );
+        })}
+      </Routes>
+    </div>
+  );
+}
+
+function Control({ onDelete }) {
+  const params = useParams();
+  const id = Number(params.id);
+  let contextUI = null;
+  if (id) {
+    contextUI = (
+      <>
+        <Button variant="outlined">UPDATE</Button>
         <Button
+          variant="outlined"
           onClick={() => {
-            // setState 안에 콜백함수로 state를 가져오는게 바람직하다.
-            // 최신 state 값을 보장할수있기때문
-            setTopics((curr) => curr.filter((el) => el.id !== id));
+            onDelete(id);
           }}
         >
           DELETE
         </Button>
-      </ButtonGroup>
-    </div>
+      </>
+    );
+  }
+  return (
+    <>
+      <Button component={Link} to="/create" variant="outlined">
+        CREATE
+      </Button>
+      {contextUI}
+    </>
   );
 }
 
