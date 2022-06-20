@@ -8,7 +8,9 @@ export function Control({ onDelete }) {
   if (id) {
     contextUI = (
       <>
-        <Button variant="outlined">UPDATE</Button>
+        <Button component={Link} to={`/update/${id}`} variant="outlined">
+          UPDATE
+        </Button>
         <Button
           variant="outlined"
           onClick={() => {
@@ -22,6 +24,7 @@ export function Control({ onDelete }) {
   }
   return (
     <>
+      {/* component={Link} 버튼인데 링크처럼 하는거.. */}
       <Button component={Link} to="/create" variant="outlined">
         CREATE
       </Button>

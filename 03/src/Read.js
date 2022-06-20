@@ -8,7 +8,7 @@ export function Read() {
   const [topic, setTopic] = useState({});
   useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3333/topics" + id);
+      const res = await fetch(`http://localhost:3333/topics/${id}`);
       const data = await res.json();
       setTopic(data);
     })();

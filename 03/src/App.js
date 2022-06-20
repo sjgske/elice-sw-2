@@ -7,12 +7,10 @@ import { Article } from "./Article";
 import { Create } from "./Create";
 import { Read } from "./Read";
 import { Control } from "./Control";
+import { Update } from "./Update";
 
 function App() {
-  const [topics, setTopics] = useState([
-    { id: 1, title: "html", body: "html is ..." },
-    { id: 2, title: "css", body: "css is ..." },
-  ]);
+  const [topics, setTopics] = useState([]);
   const refreshTopics = async () => {
     const res = await fetch("http://localhost:3333/topics");
     const data = await res.json();
@@ -23,7 +21,7 @@ function App() {
   }, []);
   const navigate = useNavigate();
 
-  const onCreateHandler = async (title, body) => {
+  const createHandler = async (title, body) => {
     const res = await fetch("http://localhost:3333/topics", {
       method: "POST",
       headers: {
@@ -31,14 +29,31 @@ function App() {
       },
       body: JSON.stringify({ title, body }),
     });
-    const data = res.json();
-    navigate(`/read/${data.id}`);
+    const data = await res.json();
+    navigate("/read/" + data.id);
     refreshTopics();
   };
 
-  const deleteHander = (id) => {
-    setTopics((curr) => curr.filter((el) => el.id !== id));
+  const deleteHandler = async (id) => {
+    const res = await fetch(`http://localhost:3333/topics/${id}`, {
+      method: "DELETE",
+    });
+    const data = await res.json();
     navigate("/");
+    refreshTopics();
+  };
+
+  const updateHandler = async (id, title, body) => {
+    const res = await fetch(`http://localhost:3333/topics/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, body }),
+    });
+    const data = await res.json();
+    navigate("/read/" + data.id);
+    refreshTopics();
   };
 
   return (
@@ -50,8 +65,12 @@ function App() {
           path="/"
           element={<Article title="Welcome" body="Hello, WEB!" />}
         />
-        <Route path="/create" element={<Create onCreate={onCreateHandler} />} />
         <Route path="/read/:id" element={<Read />} />
+        <Route path="/create" element={<Create onCreate={createHandler} />} />
+        <Route
+          path="/update/:id"
+          element={<Update onUpdate={updateHandler} />}
+        />
       </Routes>
 
       <Routes>
@@ -63,7 +82,7 @@ function App() {
               element={
                 <Control
                   onDelete={(id) => {
-                    deleteHander(id);
+                    deleteHandler(id);
                   }}
                 />
               }
